@@ -1,0 +1,10 @@
+---
+# handlers file for deploy_apache
+- name: restart httpd 
+  service: 
+      name: "httpd" 
+      state: restarted
+  register: restart
+   
+- debug: 
+   var: restart.stdout 

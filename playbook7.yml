@@ -1,0 +1,33 @@
+---
+ - name: Upload page for Apache
+   hosts: " {{MYHOSTS}}"
+   become: yes
+
+   vars:
+      source_folder: ./website
+      destin_folder: /var/www/html
+      
+   tasks:    
+
+   - name: Copy Home directory 
+     copy: src={{ source_folder }}/{{ item }} dest={{ destin_folder }} mode=0555
+     
+     loop:
+        - "text1.txt"
+        - "text2.txt"
+      
+   
+   - name: Generate INDEX.HTML file
+     template: src={{ source_folder }}/index.j2 dest={{ destin_folder }}/index.html mode=0555
+
+     notify: restart httpd
+
+   handlers:
+   - name: restart httpd 
+     service: 
+          name: "httpd" 
+          state: restarted
+     register: restart
+   
+   - debug: 
+      var: restart.stdout  

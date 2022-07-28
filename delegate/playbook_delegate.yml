@@ -1,0 +1,37 @@
+--- 
+- name: Delegate file
+  hosts: all
+  become: yes
+
+  vars: 
+    mytext1: "file1"
+    mytext2: "file2"
+
+  tasks: 
+  - name: create file1
+    copy: 
+      dest: /home/secret/text1.txt
+      content: |
+         {{ mytext1 }} 
+    delegate_to: linux1     
+
+
+  - name: create file2
+    copy: 
+      dest: /home/secret/text2.txt
+      content: |
+         {{ mytext2 }}      
+
+  - name: Reboot servers
+    shell: sleep 3 && reboot now
+    async: 1
+    poll: 0
+
+  - name: Wait for Servers stand UP
+    wait_for: 
+      host: "{{ inventory_hostname }}"      
+      state: started
+      delay: 5
+      timeout: 40
+
+

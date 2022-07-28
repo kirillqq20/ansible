@@ -1,0 +1,12 @@
+---
+# tasks file for deploy_apache_web
+- name: Copy Home directory 
+  copy: src={{ item }} dest={{ destin_folder }} mode=0555
+     
+  loop:
+     - "text1.txt"
+     - "text2.txt"
+      
+- name: Generate INDEX.HTML file
+  template: src=index.j2 dest={{ destin_folder }}/index.html mode=0555
+  notify: restart httpd

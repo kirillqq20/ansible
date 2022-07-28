@@ -1,0 +1,21 @@
+--- 
+- name: Ignor Errors
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: Task number1 
+    yum: name=treeeee state=latest
+    ignore_errors: yes
+
+  - name: Task number2
+    shell: echo Kirill Kirill
+    register: result
+    failed_when: "'Kirill' in result.stdout"
+
+  - debug:
+      var: result
+
+  - name: Task number3
+    shell: echo TTTTTTTT!!!!!!!!
+          

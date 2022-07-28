@@ -1,0 +1,19 @@
+---
+- name: My include Playbook
+  hosts: all
+  become: yes
+
+  vars: 
+    mytext1: "Hi Kirill"
+    mytext2: "Hi World"
+
+  tasks: 
+  - name: ping test
+    ping: 
+
+  - name: Create folder
+    include: create_folder.yml
+
+  - name: Create file
+    include: create_file.yml  
+            

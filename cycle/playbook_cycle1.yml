@@ -1,0 +1,33 @@
+---
+- name: Loops Playbook
+  hosts: linux1
+  become: yes
+
+  tasks:
+
+  - name: Say hello to all
+    debug: msg= " Hellow {{ item }} "
+    loop: 
+        - "Kirill"
+        - "Egor"
+        - "Anton"
+
+
+  - name: Loop untill example
+    shell: echo -n Y >> myfile.txt && cat myfile.txt
+    register: output
+    delay: 2
+    retries: 5
+    until: output.stdout.find("YY") == false
+
+
+  - name: Print Output
+    debug:
+      var: output.stdout
+
+   - name: Install program
+     yum: name {{ item }} state=installed
+     loop: 
+        - python
+        - mysql-client
+        - tree
